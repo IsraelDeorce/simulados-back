@@ -18,13 +18,15 @@ var models = require("./app/models");
 //Routes
 var authRoute = require('./app/routes/auth.js')(app);
 var userRoute = require('./app/routes/user.js')(app);
+const questionRoute = require('./app/routes/question.js')(app)
 
-//Sync Database
+/*//Sync Database
 models.sequelize.sync().then(function () {
     console.log('You\'re pretty good. Database looks fine')
 }).catch(function (err) {
     console.log(err, "Something wrong is not right with the Database Update!")
 });
+*/
 
 app.listen(3000, function (err) {
     if (!err) console.log("It's alive!!!"); else console.log(err)
