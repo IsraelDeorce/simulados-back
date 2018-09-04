@@ -1,0 +1,17 @@
+[
+    {
+        "idPractise_exam": 1,
+        "oab_exam": true,
+        "oab_exam_year": 2010
+    },
+    {
+        "idPractise_exam": 2,
+        "oab_exam": true,
+        "oab_exam_year": 2011
+    },
+    {
+        "idPractise_exam": 3,
+        "oab_exam": false,
+        "oab_exam_year": 2012
+    }
+]

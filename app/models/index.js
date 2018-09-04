@@ -13,6 +13,7 @@ db.Sequelize = Sequelize;
 db.administrators = require('./administrator.js')(sequelize, Sequelize);
 db.profiles = require('./profile.js')(sequelize, Sequelize);
 db.students = require('./student.js')(sequelize, Sequelize);
+db.exams = require ('./practise_exam.js')(sequelize, Sequelize);
 
 db.students.belongsTo(db.profiles);
 

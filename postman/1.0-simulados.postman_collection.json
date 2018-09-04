@@ -114,6 +114,32 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "exam",
+			"item": [
+				{
+					"name": "/exams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/exams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"exams"
+							]
+						},
+						"description": "Return all the exams on database."
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
