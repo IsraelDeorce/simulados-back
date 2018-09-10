@@ -1,6 +1,28 @@
 module.exports = (sequelize, Sequelize) => {
     const Question = sequelize.define('question', {
-        statement: {
+        
+    	id: {
+    		type: Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true
+    	},
+    
+    	professor_id:{
+    		type: Sequelize.INTEGER,
+    		allowNull: false
+    	},
+    	
+    	subarea_cod:{
+    		type: Sequelize.INTEGER,
+    		allowNull: false
+    	},
+        
+    	area_cod:{
+    		type: Sequelize.INTEGER,
+    		allowNull: false
+    	},
+    	
+    	statement: {
             type: Sequelize.STRING,
             notEmpty: true
         },
@@ -8,9 +30,23 @@ module.exports = (sequelize, Sequelize) => {
         approved: {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
-            notEmpty: true
+            allowNull: false;
+        },
+        
+        comment: {
+        	type: Sequelize.STRING,
+        	notEmpty: true;
+        },
+      
+        study_material: {
+        	type: Sequelize.STRING,
+        	notEmpty: false;
         }
-    })
+    },
+        
+    {
+        underscored: true
+    });
 
-    return Question
+    return Question;
 }
