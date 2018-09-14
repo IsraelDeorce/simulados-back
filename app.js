@@ -18,6 +18,7 @@ const models = require("./app/config/datasource");
 //Routes
 const authRoute = require('./app/routes/auth.js')(app);
 const userRoute = require('./app/routes/user.js')(app);
+const questionRoute = require('./app/routes/question.js')(app);
 
 //Sync Database
 models.sequelize.sync().then(function () {
