@@ -26,13 +26,11 @@ exports.getQuestionsWithPagination = async function (req, res) {
                     }
                     else if(data.lastQuestion >= participation.numberOfQuestions) return res.status(400).json({success: false, error: 'No more questions for this exam'});
                     else {
-    
                         /*===== How to order the questions of exam of OAB? =======*/
 
                         //Fetch questions
-                        let questions = await Question.findAll({ offset: data.lastQuestion, limit: data.amount, where: {practise_exam_id: data.examId}, include: [ExamQuestion]})
+                        let questions = await Question.find({ offset: data.lastQuestion, limit: data.amount, include: [ {model: ExamQuestion, where: {id: data.examId} }]})
                             .then((questions) => {
-                            
                                 questions.forEach(question => {
                                     question.alternatives = Alternative.find({where: {question_id: question.id}}).then(alternatives => {
                                         return alternatives
