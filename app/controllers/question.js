@@ -11,9 +11,10 @@ exports.getQuestionsWithPagination = async function (req, res) {
 
     const data = {
         "examId": req.query.examId,
-        "lastQuestion": req.query.lastQuestion,
-        "amount": req.query.amount
+        "lastQuestion": req.query.lastQuestion ? req.query.lastQuestion : 0,
+        "amount": req.query.amount ? req.query.amount : 10 
     }
+
     if(!data.examId) 
         return res.status(400).json({success: false, error: 'Exam not informed'});
         else {

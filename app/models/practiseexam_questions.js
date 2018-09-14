@@ -15,11 +15,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             notEmpty: true
         },
-        numberOfQuestions: {
-            type: DataTypes.INTEGER,
-            allowNull: true,//**CHANGE */
-            // notEmpty: true
-        },
         created_at: {
             type: DataTypes.DATE,
             allowNull: true,
