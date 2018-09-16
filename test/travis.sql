@@ -1,29 +1,30 @@
-# Create Testuser
-CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev';
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'dev'@'localhost';
-
-# Create DB
-CREATE DATABASE IF NOT EXISTS `simulados_database` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `simulados_database`;
-
-# Create Table
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(11) NOT NULL,
-  `created_on` timestamp NULL DEFAULT NULL,
-  `modified_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `username` varchar(50) DEFAULT NULL,
-  `salt` varchar(20) DEFAULT NULL,
-  `password` varchar(50) DEFAULT NULL,
-  `email` varchar(150) DEFAULT NULL,
-  `firstname` varchar(50) DEFAULT NULL,
-  `lastname` varchar(50) DEFAULT NULL,
-  `dob` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
-
-ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
-
-# Add Data
+CREATE TABLE IF NOT EXISTS `administrators` (`id` INTEGER auto_increment , `email` VARCHAR(255), `name` VARCHAR(255), `password` VARCHAR(255), `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `administrators` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `profiles` (`id` INTEGER auto_increment , `type` VARCHAR(255), `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `profiles` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `professors` (`id` INTEGER auto_increment , `email` VARCHAR(255) NOT NULL, `name` VARCHAR(255) NOT NULL, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) DEFAULT true, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `professors` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `areas` (`id` INTEGER auto_increment , `name` VARCHAR(255) NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `areas` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `practise_exams` (`id` INTEGER auto_increment , `aob_exam` TINYINT(1) DEFAULT false, `aob_exam_year` INTEGER, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `practise_exams` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `students` (`id` INTEGER auto_increment , `profile_id` INTEGER NOT NULL, `email` VARCHAR(255), `name` VARCHAR(255), `password` VARCHAR(255), `active` TINYINT(1) DEFAULT true, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`), FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
+SHOW INDEX FROM `students` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `subareas` (`id` INTEGER auto_increment , `area_id` INTEGER NOT NULL, `name` VARCHAR(255) NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`), FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
+SHOW INDEX FROM `subareas` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `professor_subareas` (`id` INTEGER auto_increment , `professor_id` INTEGER NOT NULL, `subarea_id` INTEGER NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`), FOREIGN KEY (`professor_id`) REFERENCES `professors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (`subarea_id`) REFERENCES `subareas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
+SHOW INDEX FROM `professor_subareas` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `coordinators` (`id` INTEGER auto_increment , `area_id` INTEGER NOT NULL, `email` VARCHAR(255) NOT NULL, `name` VARCHAR(255) NOT NULL, `password` VARCHAR(255) NOT NULL, `active` TINYINT(1) DEFAULT true, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`), FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
+SHOW INDEX FROM `coordinators` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `questions` (`id` INTEGER auto_increment , `professor_id` INTEGER NOT NULL, `coordinator_id` INTEGER NOT NULL, `subarea_id` INTEGER NOT NULL, `statement` VARCHAR(255) NOT NULL, `approved` TINYINT(1), `studyMaterials` VARCHAR(255), `comment` VARCHAR(255) NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `questions` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `practiseexam_questions` (`id` INTEGER auto_increment , `question_id` INTEGER NOT NULL, `practise_exam_id` INTEGER NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`), FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (`practise_exam_id`) REFERENCES `practise_exams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE) ENGINE=InnoDB;
+SHOW INDEX FROM `practiseexam_questions` FROM `simulados_database`;
+ CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER auto_increment , `name` VARCHAR(255), `username` TEXT, `about` TEXT, `email` VARCHAR(255), `password` VARCHAR(255) NOT NULL, `last_login` DATETIME, `status` ENUM('active', 'inactive') DEFAULT 'active', `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+ SHOW INDEX FROM `users` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `answers` (`id` INTEGER auto_increment , `question_id` INTEGER NOT NULL, `participation_id` INTEGER NOT NULL, `alternative_id` INTEGER NOT NULL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `answers` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `participations` (`id` INTEGER auto_increment , `practise_exam_id` INTEGER NOT NULL, `student_id` INTEGER NOT NULL, `time_of_conclusion` DATETIME, `numberOfQuestions` INTEGER, `numberOfCorrectAnswers` INTEGER, `numberOfWrongAnswers` INTEGER, `hitRatio` DECIMAL, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `participations` FROM `simulados_database`;
+CREATE TABLE IF NOT EXISTS `alternatives` (`id` INTEGER auto_increment , `question_id` INTEGER NOT NULL, `professor_id` INTEGER NOT NULL, `description` VARCHAR(255) NOT NULL, `correct` TINYINT(1) DEFAULT false, `created_at` DATETIME, `updated_at` DATETIME, PRIMARY KEY (`id`)) ENGINE=InnoDB;
+SHOW INDEX FROM `alternatives` FROM `simulados_database`;
