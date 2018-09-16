@@ -15,7 +15,7 @@ describe('Route POST /answer', () => {
             alternative_id: "123456"
         })
         // .expect('Content-Type', /json/)
-        .expect(500)
+        .expect(400)
         .end(function (err, res) {
             done(err);
         });
