@@ -5,6 +5,9 @@ node_js:
 services:
   - mysql
 
+before_script:
+  - mysql -u root -e 'CREATE DATABASE simulados_database;'
+
 cache:
   directories:
     - "node_modules"
